@@ -632,6 +632,11 @@ function createDefaultGlobalConfig(): GlobalConfig {
     cachedGrowthBookFeatures: {},
     respectGitignore: true,
     copyFullResponse: false,
+    companion: {
+      name: 'Buddy',
+      personality: 'A friendly little companion who reacts with short, playful comments.',
+      hatchedAt: Date.now(),
+    },
   }
 }
 
