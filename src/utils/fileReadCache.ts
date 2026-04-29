@@ -13,7 +13,7 @@ type CachedFileData = {
  */
 class FileReadCache {
   private cache = new Map<string, CachedFileData>()
-  private readonly maxCacheSize = 1000
+  private readonly maxCacheSize = 200
 
   /**
    * Reads a file with caching. Returns both content and encoding.

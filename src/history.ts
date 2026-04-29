@@ -16,8 +16,8 @@ import {
 import { sleep } from './utils/sleep.js'
 import { jsonParse, jsonStringify } from './utils/slowOperations.js'
 
-const MAX_HISTORY_ITEMS = 100
-const MAX_PASTED_CONTENT_LENGTH = 1024
+const MAX_HISTORY_ITEMS = 50
+const MAX_PASTED_CONTENT_LENGTH = 512
 
 /**
  * Stored paste content - either inline content or a hash reference to paste store.
