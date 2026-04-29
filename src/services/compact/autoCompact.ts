@@ -64,6 +64,51 @@ export const WARNING_THRESHOLD_BUFFER_TOKENS = 20_000
 export const ERROR_THRESHOLD_BUFFER_TOKENS = 20_000
 export const MANUAL_COMPACT_BUFFER_TOKENS = 3_000
 
+export type AutoCompactStrategy = 'aggressive' | 'balanced' | 'conservative'
+
+export interface AutoCompactConfig {
+  thresholdPercent: number
+  strategy: AutoCompactStrategy
+  preserveRecentCount: number
+}
+
+const STRATEGY_THRESHOLDS: Record<AutoCompactStrategy, number> = {
+  aggressive: 0.70,
+  balanced: 0.85,
+  conservative: 0.93,
+}
+
+const STRATEGY_BUFFER_MULTIPLIERS: Record<AutoCompactStrategy, number> = {
+  aggressive: 1.5,
+  balanced: 1.0,
+  conservative: 0.7,
+}
+
+export function getAutoCompactConfig(): AutoCompactConfig {
+  const userConfig = getGlobalConfig()
+  
+  const thresholdPercent = userConfig.autoCompactThreshold 
+    ? parseInt(userConfig.autoCompactThreshold.replace('%', ''), 10) / 100
+    : STRATEGY_THRESHOLDS[userConfig.autoCompactStrategy as AutoCompactStrategy] || STRATEGY_THRESHOLDS.balanced
+  
+  const strategy: AutoCompactStrategy = (userConfig.autoCompactStrategy as AutoCompactStrategy) || 'balanced'
+  
+  const preserveRecentCount = userConfig.autoCompactPreserveRecent 
+    ? parseInt(userConfig.autoCompactPreserveRecent, 10)
+    : 10
+  
+  return {
+    thresholdPercent,
+    strategy,
+    preserveRecentCount,
+  }
+}
+
+export function getStrategyBufferMultiplier(): number {
+  const config = getAutoCompactConfig()
+  return STRATEGY_BUFFER_MULTIPLIERS[config.strategy]
+}
+
 // Stop trying autocompact after this many consecutive failures.
 // BQ 2026-03-10: 1,279 sessions had 50+ consecutive failures (up to 3,272)
 // in a single session, wasting ~250K API calls/day globally.
@@ -71,11 +116,12 @@ const MAX_CONSECUTIVE_AUTOCOMPACT_FAILURES = 3
 
 export function getAutoCompactThreshold(model: string): number {
   const effectiveContextWindow = getEffectiveContextWindowSize(model)
+  const config = getAutoCompactConfig()
+  const bufferMultiplier = getStrategyBufferMultiplier()
+  
+  const adjustedBufferTokens = Math.floor(AUTOCOMPACT_BUFFER_TOKENS * bufferMultiplier)
+  const autocompactThreshold = effectiveContextWindow - adjustedBufferTokens
 
-  const autocompactThreshold =
-    effectiveContextWindow - AUTOCOMPACT_BUFFER_TOKENS
-
-  // Override for easier testing of autocompact
   const envPercent = process.env.CLAUDE_AUTOCOMPACT_PCT_OVERRIDE
   if (envPercent) {
     const parsed = parseFloat(envPercent)
@@ -87,7 +133,8 @@ export function getAutoCompactThreshold(model: string): number {
     }
   }
 
-  return autocompactThreshold
+  const configThreshold = Math.floor(effectiveContextWindow * config.thresholdPercent)
+  return Math.min(configThreshold, autocompactThreshold)
 }
 
 export function calculateTokenWarningState(

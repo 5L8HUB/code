@@ -56,6 +56,24 @@ export const SUPPORTED_SETTINGS: Record<string, SettingConfig> = {
     type: 'boolean',
     description: 'Auto-compact when context is full',
   },
+  autoCompactThreshold: {
+    source: 'global',
+    type: 'string',
+    description: 'Token threshold percentage for auto-compact (e.g., "80%", "90%")',
+    options: ['70%', '80%', '85%', '90%', '95%'],
+  },
+  autoCompactStrategy: {
+    source: 'global',
+    type: 'string',
+    description: 'Strategy for auto-compact: "aggressive" (compact early), "balanced" (default), "conservative" (compact late)',
+    options: ['aggressive', 'balanced', 'conservative'],
+  },
+  autoCompactPreserveRecent: {
+    source: 'global',
+    type: 'string',
+    description: 'Number of recent messages to preserve during auto-compact',
+    options: ['5', '10', '15', '20', '30'],
+  },
   autoMemoryEnabled: {
     source: 'settings',
     type: 'boolean',
