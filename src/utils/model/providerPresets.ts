@@ -7,6 +7,7 @@ export type ProviderPreset = {
   description: string
   models?: string[]
   defaultModel?: string
+  supports1MModels?: string[]
 }
 
 export const PROVIDER_PRESETS: ProviderPreset[] = [
@@ -17,6 +18,7 @@ export const PROVIDER_PRESETS: ProviderPreset[] = [
     description: 'Anthropic Claude API',
     models: ['claude-sonnet-4-20250514', 'claude-opus-4-20250514', 'claude-3-5-sonnet-20241022'],
     defaultModel: 'claude-sonnet-4-20250514',
+    supports1MModels: ['claude-sonnet-4-20250514', 'claude-opus-4-20250514'],
   },
   {
     name: 'OpenAI',
@@ -31,8 +33,18 @@ export const PROVIDER_PRESETS: ProviderPreset[] = [
     provider: 'deepseek',
     baseURL: 'https://api.deepseek.com',
     description: 'DeepSeek API',
-    models: ['deepseek-chat', 'deepseek-coder', 'deepseek-reasoner'],
+    models: ['deepseek-chat', 'deepseek-reasoner'],
     defaultModel: 'deepseek-chat',
+    supports1MModels: ['deepseek-chat', 'deepseek-reasoner'],
+  },
+  {
+    name: 'Gemini',
+    provider: 'gemini',
+    baseURL: 'https://generativelanguage.googleapis.com/v1beta',
+    description: 'Google Gemini API',
+    models: ['gemini-pro', 'gemini-1.5-pro', 'gemini-1.5-flash'],
+    defaultModel: 'gemini-pro',
+    supports1MModels: ['gemini-1.5-pro', 'gemini-1.5-flash'],
   },
   {
     name: '智谱 BigModel',
@@ -65,6 +77,7 @@ export const PROVIDER_PRESETS: ProviderPreset[] = [
     description: '小米 AI API',
     models: ['mi-chat', 'mi-coder'],
     defaultModel: 'mi-chat',
+    supports1MModels: ['mi-chat', 'mi-coder'],
   },
 ]
 
@@ -84,4 +97,19 @@ export function getDefaultModelForProvider(provider: CustomApiProvider): string 
 export function getModelsForProvider(provider: CustomApiProvider): string[] {
   const preset = getProviderPreset(provider)
   return preset?.models ?? []
+}
+
+export function get1MSupportedModelsForProvider(provider: CustomApiProvider): string[] {
+  const preset = getProviderPreset(provider)
+  return preset?.supports1MModels ?? []
+}
+
+export function isModel1MSupported(model: string): boolean {
+  const modelLower = model.toLowerCase()
+  for (const preset of PROVIDER_PRESETS) {
+    if (preset.supports1MModels?.some(m => m.toLowerCase() === modelLower || modelLower.includes(m.toLowerCase()))) {
+      return true
+    }
+  }
+  return false
 }

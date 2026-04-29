@@ -72,6 +72,29 @@ Doge Code (基于泄露源码改进)
 
 选择 Provider 后会自动配置对应的 Base URL 和默认模型。
 
+### 自动 1M 上下文支持
+
+CLI 会自动识别支持 1M 上下文的模型并启用长上下文：
+
+| Provider | 支持 1M 上下文的模型 |
+|----------|---------------------|
+| Anthropic | claude-sonnet-4, claude-opus-4-6 |
+| DeepSeek | deepseek-chat, deepseek-reasoner |
+| Gemini | gemini-1.5-pro, gemini-1.5-flash |
+| 小米 | mi-chat, mi-coder |
+
+也可以通过环境变量自定义支持 1M 上下文的模型：
+
+```bash
+export ANTHROPIC_1M_MODELS=custom-model-1,custom-model-2
+```
+
+或者在模型名称后添加 `[1m]` 后缀强制启用 1M 上下文：
+
+```bash
+doge --model deepseek-chat[1m]
+```
+
 ### Buddy 宠物系统
 内置小企鹅宠物，显示在输入框旁边：
 - `/buddy` - 启用/唤出 Buddy

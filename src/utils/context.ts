@@ -4,6 +4,7 @@ import { getGlobalConfig } from './config.js'
 import { isEnvTruthy } from './envUtils.js'
 import { getCanonicalName } from './model/model.js'
 import { getModelCapability } from './model/modelCapabilities.js'
+import { isModel1MSupported } from './model/providerPresets.js'
 
 // Model context window size (200k tokens for all models right now)
 export const MODEL_CONTEXT_WINDOW_DEFAULT = 200_000
@@ -44,8 +45,40 @@ export function modelSupports1M(model: string): boolean {
   if (is1mContextDisabled()) {
     return false
   }
-  const canonical = getCanonicalName(model)
-  return canonical.includes('claude-sonnet-4') || canonical.includes('opus-4-6')
+  const canonical = getCanonicalName(model).toLowerCase()
+  
+  // Claude models with 1M support
+  if (canonical.includes('claude-sonnet-4') || canonical.includes('opus-4-6')) {
+    return true
+  }
+  
+  // DeepSeek models with 1M support (V4 Flash/Pro)
+  if (canonical.includes('deepseek-chat') || canonical.includes('deepseek-reasoner')) {
+    return true
+  }
+  
+  // Xiaomi MiMo models with 1M support (V2.5 Pro/V2)
+  if (canonical.includes('mi-chat') || canonical.includes('mi-coder') || canonical.includes('mimo')) {
+    return true
+  }
+  
+  // Gemini 1.5 models with 1M support
+  if (canonical.includes('gemini-1.5-pro') || canonical.includes('gemini-1.5-flash')) {
+    return true
+  }
+  
+  // Check provider presets for 1M support
+  if (isModel1MSupported(model)) {
+    return true
+  }
+  
+  // Custom models via environment variable
+  const custom1MModels = process.env.ANTHROPIC_1M_MODELS?.split(',').map(m => m.trim().toLowerCase()) ?? []
+  if (custom1MModels.some(m => canonical.includes(m))) {
+    return true
+  }
+  
+  return false
 }
 
 export function getContextWindowForModel(
