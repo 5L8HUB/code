@@ -12,7 +12,22 @@
 
 ## 项目简介
 
-Doge Code 是基于 Claude Code 源码树的增强版 Fork，在保留原有功能的基础上，进行了多项性能优化和功能增强。
+本项目是基于 [Doge Code](https://github.com/HELPMEEADICE/doge-code) 的 Fork 版本，进行了进一步的性能优化和功能增强。
+
+### 项目历史
+
+```
+Claude Code (官方) 
+    ↓ 源码泄露
+Doge Code (基于泄露源码改进)
+    ↓ Fork
+本项目 (进一步优化)
+```
+
+**项目来源说明：**
+- **Claude Code** - Anthropic 官方产品
+- **Doge Code** - 基于网上泄露的 Claude Code 源码进行逆向还原和改进的开源项目
+- **本项目** - Fork 自 Doge Code，在此基础上进行了更多优化
 
 ## 主要特性
 
@@ -104,6 +119,11 @@ bun link
 2. **内存优化** - 更低的内存占用
 3. **增强的压缩功能** - 更智能的上下文管理
 4. **配置隔离** - 使用 `~/.doge` 目录，不与原版冲突
+
+## 致谢
+
+- [Anthropic](https://www.anthropic.com) - Claude Code 原始开发者
+- [Doge Code](https://github.com/HELPMEEADICE/doge-code) - 本项目的基础来源
 
 ## 免责声明
 
