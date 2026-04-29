@@ -240,6 +240,9 @@ export type GlobalConfig = {
   bypassPermissionsModeAccepted?: boolean
   hasUsedBackslashReturn?: boolean
   autoCompactEnabled: boolean // Controls whether auto-compact is enabled
+  autoCompactThreshold?: string // Token threshold percentage for auto-compact (e.g., "80%", "90%")
+  autoCompactStrategy?: string // Strategy for auto-compact: "aggressive", "balanced", "conservative"
+  autoCompactPreserveRecent?: string // Number of recent messages to preserve during auto-compact
   showTurnDuration: boolean // Controls whether to show turn duration message (e.g., "Cooked for 1m 6s")
   /**
    * @deprecated Use settings.env instead.
@@ -608,6 +611,8 @@ function createDefaultGlobalConfig(): GlobalConfig {
     verbose: false,
     editorMode: 'normal',
     autoCompactEnabled: true,
+    autoCompactStrategy: 'balanced',
+    autoCompactPreserveRecent: '10',
     showTurnDuration: true,
     hasSeenTasksHint: false,
     hasUsedStash: false,
