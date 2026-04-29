@@ -110,7 +110,7 @@ export function ThemePicker(t0) {
   const exitState = useExitOnCtrlCDWithKeybindings(skipExitHandling ? _temp2 : undefined);
   let t10;
   if ($[7] === Symbol.for("react.memo_cache_sentinel")) {
-    t10 = [...(feature("AUTO_THEME") ? [{
+    t10 = [...(true ? [{
       label: "Auto (match terminal)",
       value: "auto" as const
     }] : []), {

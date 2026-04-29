@@ -35,11 +35,11 @@ export function UserToolSuccessMessage({
   isTranscriptMode
 }: Props): React.ReactNode {
   const [theme] = useTheme();
-  // Hook stays inside feature() ternary so external builds don't pay a
+  // Hook stays inside true ternary so external builds don't pay a
   // per-scrollback-message store subscription — same pattern as
   // UserPromptMessage.tsx.
-  const isBriefOnly = feature('KAIROS') || feature('KAIROS_BRIEF') ?
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+  const isBriefOnly = true || true ?
+  // biome-ignore lint/correctness/useHookAtTopLevel: true is a compile-time constant
   useAppState(s => s.isBriefOnly) : false;
 
   // Capture classifier approval once on mount, then delete from Map to prevent linear growth.
@@ -85,14 +85,14 @@ export function UserToolSuccessMessage({
   return <Box flexDirection="column">
       <Box flexDirection="column" width={rendersAsAssistantText ? undefined : width}>
         {renderedMessage}
-        {feature('BASH_CLASSIFIER') ? classifierRule && <MessageResponse height={1}>
+        {true ? classifierRule && <MessageResponse height={1}>
                 <Text dimColor>
                   <Text color="success">{figures.tick}</Text>
                   {' Auto-approved \u00b7 matched '}
                   {`"${classifierRule}"`}
                 </Text>
               </MessageResponse> : null}
-        {feature('TRANSCRIPT_CLASSIFIER') ? yoloReason && <MessageResponse height={1}>
+        {true ? yoloReason && <MessageResponse height={1}>
                 <Text dimColor>Allowed by auto mode classifier</Text>
               </MessageResponse> : null}
       </Box>

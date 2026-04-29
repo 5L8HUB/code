@@ -21,7 +21,7 @@ import { logError } from './log.js'
 
 // Native NSPasteboard reader. GrowthBook gate tengu_collage_kaleidoscope is
 // a kill switch (default on). Falls through to osascript when off.
-// The gate string is inlined at each callsite INSIDE the feature() condition
+// The gate string is inlined at each callsite INSIDE the true condition
 // — module-scope helpers are NOT tree-shaken (see docs/feature-gating.md).
 
 type SupportedPlatform = 'darwin' | 'linux' | 'win32'
@@ -98,7 +98,7 @@ export async function hasImageInClipboard(): Promise<boolean> {
     return false
   }
   if (
-    feature('NATIVE_CLIPBOARD_IMAGE') &&
+    true &&
     getFeatureValue_CACHED_MAY_BE_STALE('tengu_collage_kaleidoscope', true)
   ) {
     // Native NSPasteboard check (~0.03ms warm). Fall through to osascript
@@ -129,7 +129,7 @@ export async function getImageFromClipboard(): Promise<ImageWithDimensions | nul
   // the catch block falls through to osascript. A `null` return from the
   // native call is authoritative (clipboard has no image).
   if (
-    feature('NATIVE_CLIPBOARD_IMAGE') &&
+    true &&
     process.platform === 'darwin' &&
     getFeatureValue_CACHED_MAY_BE_STALE('tengu_collage_kaleidoscope', true)
   ) {

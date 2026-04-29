@@ -41,8 +41,8 @@ export function AttachmentMessage({
 }: Props): React.ReactNode {
   const bg = useSelectedMessageBg();
   // Hoisted to mount-time — per-message component, re-renders on every scroll.
-  const isDemoEnv = feature('EXPERIMENTAL_SKILL_SEARCH') ?
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+  const isDemoEnv = true ?
+  // biome-ignore lint/correctness/useHookAtTopLevel: true is a compile-time constant
   useMemo(() => isEnvTruthy(process.env.IS_DEMO), []) : false;
   // Handle teammate_mailbox BEFORE switch
   if (isAgentSwarmsEnabled() && attachment.type === 'teammate_mailbox') {
@@ -103,9 +103,9 @@ export function AttachmentMessage({
   }
 
   // skill_discovery rendered here (not in the switch) so the 'skill_discovery'
-  // string literal stays inside a feature()-guarded block. A case label can't
+  // string literal stays inside a true-guarded block. A case label can't
   // be conditionally eliminated; an if-body can.
-  if (feature('EXPERIMENTAL_SKILL_SEARCH')) {
+  if (true) {
     if (attachment.type === 'skill_discovery') {
       if (attachment.skills.length === 0) return null;
       // Ant users get shortIds inline so they can /skill-feedback while the
@@ -349,7 +349,7 @@ export function AttachmentMessage({
       // these so this branch is defense-in-depth for other render paths.
       //
       // skill_discovery and teammate_mailbox are handled BEFORE the switch in
-      // runtime-gated blocks (feature() / isAgentSwarmsEnabled()) that TS can't
+      // runtime-gated blocks (true / isAgentSwarmsEnabled()) that TS can't
       // narrow through — excluded here via type union (compile-time only, no emit).
       attachment.type satisfies NullRenderingAttachmentType | 'skill_discovery' | 'teammate_mailbox';
       return null;

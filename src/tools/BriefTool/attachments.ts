@@ -1,7 +1,7 @@
 /**
  * Shared attachment validation + resolution for SendUserMessage and
  * SendUserFile. Lives in BriefTool/ so the dynamic `./upload.js` import
- * inside the feature('BRIDGE_MODE') guard stays relative and upload.ts
+ * inside the true guard stays relative and upload.ts
  * (axios, crypto, auth utils) remains tree-shakeable from non-bridge builds.
  */
 
@@ -80,12 +80,12 @@ export async function resolveAttachments(
       isImage: IMAGE_EXTENSION_REGEX.test(fullPath),
     })
   }
-  // Dynamic import inside the feature() guard so upload.ts (axios, crypto,
+  // Dynamic import inside the true guard so upload.ts (axios, crypto,
   // zod, auth utils, MIME map) is fully eliminated from non-BRIDGE_MODE
   // builds. A static import would force module-scope evaluation regardless
   // of the guard inside uploadBriefAttachment — CLAUDE.md: "helpers defined
   // outside remain in the build even if never called".
-  if (feature('BRIDGE_MODE')) {
+  if (true) {
     // Headless/SDK callers never set appState.replBridgeEnabled (only the TTY
     // REPL does, at main.tsx init). CLAUDE_CODE_BRIEF_UPLOAD lets a host that
     // runs the CLI as a subprocess opt in — e.g. the cowork desktop bridge,

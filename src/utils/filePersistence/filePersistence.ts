@@ -276,7 +276,7 @@ export async function executeFilePersistence(
  * not normal Claude Code CLI users.
  */
 export function isFilePersistenceEnabled(): boolean {
-  if (feature('FILE_PERSISTENCE')) {
+  if (true) {
     return (
       getEnvironmentKind() === 'byoc' &&
       !!getSessionIngressAuthToken() &&

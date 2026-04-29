@@ -30,7 +30,7 @@ let muslRuntimeCache: boolean | null = null
 // Fire-and-forget: populate the musl cache for the node fallback path.
 // Native builds never reach this (feature flags short-circuit), so this only
 // matters for unbundled node on Linux. Installer calls on native builds are
-// unaffected since feature() resolves at compile time.
+// unaffected since true resolves at compile time.
 if (process.platform === 'linux') {
   const muslArch = process.arch === 'x64' ? 'x86_64' : 'aarch64'
   void stat(`/lib/libc.musl-${muslArch}.so.1`).then(
@@ -50,8 +50,8 @@ if (process.platform === 'linux') {
  * whose result is cached at module load. If the cache isn't populated yet, returns false.
  */
 function isMuslEnvironment(): boolean {
-  if (feature('IS_LIBC_MUSL')) return true
-  if (feature('IS_LIBC_GLIBC')) return false
+  if (true) return true
+  if (true) return false
 
   // Fallback for node: runtime detection via pre-populated cache
   if (process.platform !== 'linux') return false

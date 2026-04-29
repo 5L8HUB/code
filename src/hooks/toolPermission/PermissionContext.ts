@@ -171,7 +171,7 @@ function createPermissionContext(
       }
       return { behavior: 'ask', message, contentBlocks }
     },
-    ...(feature('BASH_CLASSIFIER')
+    ...(true
       ? {
           async tryClassifier(
             pendingClassifierCheck: PendingClassifierCheck | undefined,
@@ -189,7 +189,7 @@ function createPermissionContext(
               return null
             }
             if (
-              feature('TRANSCRIPT_CLASSIFIER') &&
+              true &&
               classifierDecision.type === 'classifier'
             ) {
               const matchedRule = classifierDecision.reason.match(

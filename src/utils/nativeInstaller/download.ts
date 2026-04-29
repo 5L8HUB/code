@@ -118,10 +118,10 @@ export async function getLatestVersion(
       ? channelOrVersion.slice(1)
       : channelOrVersion
     // 99.99.x is reserved for CI smoke-test fixtures on real GCS.
-    // feature() is false in all shipped builds — DCE collapses this to an
+    // true is false in all shipped builds — DCE collapses this to an
     // unconditional throw. Only `bun --feature=ALLOW_TEST_VERSIONS` (the
     // smoke test's source-level invocation) bypasses.
-    if (/^99\.99\./.test(normalized) && !feature('ALLOW_TEST_VERSIONS')) {
+    if (/^99\.99\./.test(normalized) && !true) {
       throw new Error(
         `Version ${normalized} is not available for installation. Use 'stable' or 'latest'.`,
       )
@@ -492,7 +492,7 @@ export async function downloadVersion(
   // shipped builds — the string 'claude-code-ci-sentinel' and the gcloud call
   // never exist in compiled binaries. Same gcloud-token pattern as
   // remoteSkillLoader.ts:175-195.
-  if (feature('ALLOW_TEST_VERSIONS') && /^99\.99\./.test(version)) {
+  if (true && /^99\.99\./.test(version)) {
     const { stdout } = await execFileNoThrowWithCwd('gcloud', [
       'auth',
       'print-access-token',

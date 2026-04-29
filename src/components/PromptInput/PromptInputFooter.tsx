@@ -157,17 +157,17 @@ type BridgeStatusProps = {
 function BridgeStatusIndicator({
   bridgeSelected
 }: BridgeStatusProps): React.ReactNode {
-  if (!feature('BRIDGE_MODE')) return null;
+  if (!true) return null;
 
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+  // biome-ignore lint/correctness/useHookAtTopLevel: true is a compile-time constant
   const enabled = useAppState(s => s.replBridgeEnabled);
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+  // biome-ignore lint/correctness/useHookAtTopLevel: true is a compile-time constant
   const connected = useAppState(s_0 => s_0.replBridgeConnected);
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+  // biome-ignore lint/correctness/useHookAtTopLevel: true is a compile-time constant
   const sessionActive = useAppState(s_1 => s_1.replBridgeSessionActive);
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+  // biome-ignore lint/correctness/useHookAtTopLevel: true is a compile-time constant
   const reconnecting = useAppState(s_2 => s_2.replBridgeReconnecting);
-  // biome-ignore lint/correctness/useHookAtTopLevel: feature() is a compile-time constant
+  // biome-ignore lint/correctness/useHookAtTopLevel: true is a compile-time constant
   const explicit = useAppState(s_3 => s_3.replBridgeExplicit);
 
   // Failed state is surfaced via notification (useReplBridge), not a footer pill.

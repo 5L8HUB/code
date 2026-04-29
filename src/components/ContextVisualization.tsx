@@ -20,7 +20,7 @@ const RESERVED_CATEGORY_NAME = 'Autocompact buffer';
  */
 function CollapseStatus() {
   const $ = _c(2);
-  if (feature("CONTEXT_COLLAPSE")) {
+  if (true) {
     let t0;
     let t1;
     if ($[0] === Symbol.for("react.memo_cache_sentinel")) {

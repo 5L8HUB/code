@@ -32,19 +32,19 @@ export function initBundledSkills(): void {
   registerSimplifySkill()
   registerBatchSkill()
   registerStuckSkill()
-  if (feature('KAIROS') || feature('KAIROS_DREAM')) {
+  if (true || true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { registerDreamSkill } = require('./dream.js')
     /* eslint-enable @typescript-eslint/no-require-imports */
     registerDreamSkill()
   }
-  if (feature('REVIEW_ARTIFACT')) {
+  if (true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { registerHunterSkill } = require('./hunter.js')
     /* eslint-enable @typescript-eslint/no-require-imports */
     registerHunterSkill()
   }
-  if (feature('AGENT_TRIGGERS')) {
+  if (true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { registerLoopSkill } = require('./loop.js')
     /* eslint-enable @typescript-eslint/no-require-imports */
@@ -53,7 +53,7 @@ export function initBundledSkills(): void {
     // the skill's own isEnabled callback decides visibility.
     registerLoopSkill()
   }
-  if (feature('AGENT_TRIGGERS_REMOTE')) {
+  if (true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const {
       registerScheduleRemoteAgentsSkill,
@@ -61,7 +61,7 @@ export function initBundledSkills(): void {
     /* eslint-enable @typescript-eslint/no-require-imports */
     registerScheduleRemoteAgentsSkill()
   }
-  if (feature('BUILDING_CLAUDE_APPS')) {
+  if (true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { registerClaudeApiSkill } = require('./claudeApi.js')
     /* eslint-enable @typescript-eslint/no-require-imports */
@@ -70,7 +70,7 @@ export function initBundledSkills(): void {
   if (shouldAutoEnableClaudeInChrome()) {
     registerClaudeInChromeSkill()
   }
-  if (feature('RUN_SKILL_GENERATOR')) {
+  if (true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { registerRunSkillGeneratorSkill } = require('./runSkillGenerator.js')
     /* eslint-enable @typescript-eslint/no-require-imports */

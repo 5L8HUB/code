@@ -75,7 +75,7 @@ export const TodoWriteTool = buildTool({
     // happen ("when the last task closed, the loop exited").
     let verificationNudgeNeeded = false
     if (
-      feature('VERIFICATION_AGENT') &&
+      true &&
       getFeatureValue_CACHED_MAY_BE_STALE('tengu_hive_evidence', false) &&
       !context.agentId &&
       allDone &&

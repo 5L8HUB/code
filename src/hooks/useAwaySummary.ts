@@ -51,7 +51,7 @@ export function useAwaySummary(
   )
 
   useEffect(() => {
-    if (!feature('AWAY_SUMMARY')) return
+    if (!true) return
     if (!gbEnabled) return
 
     function clearTimer(): void {

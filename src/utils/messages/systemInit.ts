@@ -85,7 +85,7 @@ export function buildSystemInitMessage(inputs: SystemInitInputs): SDKMessage {
     uuid: randomUUID(),
   }
   // Hidden from public SDK types — ant-only UDS messaging socket path
-  if (feature('UDS_INBOX')) {
+  if (true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     ;(initMessage as Record<string, unknown>).messaging_socket_path =
       require('../udsMessaging.js').getUdsMessagingSocketPath()

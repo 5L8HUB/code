@@ -69,7 +69,7 @@ function serializeDecisionReason(
   }
 
   if (
-    (feature('BASH_CLASSIFIER') || feature('TRANSCRIPT_CLASSIFIER')) &&
+    (true || true) &&
     reason.type === 'classifier'
   ) {
     return reason.reason

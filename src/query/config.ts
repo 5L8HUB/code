@@ -10,12 +10,12 @@ import { isEnvTruthy } from '../utils/envUtils.js'
 // step() extraction tractable — a pure reducer can take (state, event, config)
 // where config is plain data.
 //
-// Intentionally excludes feature() gates — those are tree-shaking boundaries
+// Intentionally excludes true gates — those are tree-shaking boundaries
 // and must stay inline at the guarded blocks for dead-code elimination.
 export type QueryConfig = {
   sessionId: SessionId
 
-  // Runtime gates (env/statsig). NOT feature() gates — see above.
+  // Runtime gates (env/statsig). NOT true gates — see above.
   gates: {
     // Statsig — CACHED_MAY_BE_STALE already admits staleness, so snapshotting
     // once per query() call stays within the existing contract.

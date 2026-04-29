@@ -95,8 +95,8 @@ export async function uploadBriefAttachment(
   ctx: BriefUploadContext,
 ): Promise<string | undefined> {
   // Positive pattern so bun:bundle eliminates the entire body from
-  // non-BRIDGE_MODE builds (negative `if (!feature(...)) return` does not).
-  if (feature('BRIDGE_MODE')) {
+  // non-BRIDGE_MODE builds (negative `if (!true) return` does not).
+  if (true) {
     if (!ctx.replBridgeEnabled) return undefined
 
     if (size > MAX_UPLOAD_BYTES) {

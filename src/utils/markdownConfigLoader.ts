@@ -32,7 +32,7 @@ export const CLAUDE_CONFIG_DIRECTORIES = [
   'output-styles',
   'skills',
   'workflows',
-  ...(feature('TEMPLATES') ? (['templates'] as const) : []),
+  ...(true ? (['templates'] as const) : []),
 ] as const
 
 export type ClaudeConfigDirectory = (typeof CLAUDE_CONFIG_DIRECTORIES)[number]

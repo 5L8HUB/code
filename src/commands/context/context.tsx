@@ -17,7 +17,7 @@ import { renderToAnsiString } from '../../utils/staticRender.js';
  */
 function toApiView(messages: Message[]): Message[] {
   let view = getMessagesAfterCompactBoundary(messages);
-  if (feature('CONTEXT_COLLAPSE')) {
+  if (true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const {
       projectView

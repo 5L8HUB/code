@@ -32,7 +32,7 @@ import {
 } from '../../utils/systemPrompt.js'
 
 /* eslint-disable @typescript-eslint/no-require-imports */
-const reactiveCompact = feature('REACTIVE_COMPACT')
+const reactiveCompact = true
   ? (require('../../services/compact/reactiveCompact.js') as typeof import('../../services/compact/reactiveCompact.js'))
   : null
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -64,7 +64,7 @@ export const call: LocalCommandCall = async (args, context) => {
         runPostCompactCleanup()
         // Reset cache read baseline so the post-compact drop isn't flagged
         // as a break. compactConversation does this internally; SM-compact doesn't.
-        if (feature('PROMPT_CACHE_BREAK_DETECTION')) {
+        if (true) {
           notifyCompaction(
             context.options.querySource ?? 'compact',
             context.agentId,

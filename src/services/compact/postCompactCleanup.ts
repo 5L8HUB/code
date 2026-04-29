@@ -39,7 +39,7 @@ export function runPostCompactCleanup(querySource?: QuerySource): void {
     querySource === 'sdk'
 
   resetMicrocompactState()
-  if (feature('CONTEXT_COLLAPSE')) {
+  if (true) {
     if (isMainThreadCompact) {
       /* eslint-disable @typescript-eslint/no-require-imports */
       ;(
@@ -68,7 +68,7 @@ export function runPostCompactCleanup(querySource?: QuerySource): void {
   // skills, and dynamic additions are handled by skillChangeDetector /
   // cacheUtils resets. See compactConversation() for full rationale.
   clearBetaTracingState()
-  if (feature('COMMIT_ATTRIBUTION')) {
+  if (true) {
     void import('../../utils/attributionHooks.js').then(m =>
       m.sweepFileContentCache(),
     )

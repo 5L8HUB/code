@@ -267,7 +267,7 @@ export function isClassifierDenial(content: string): boolean {
 export function buildYoloRejectionMessage(reason: string): string {
   const prefix = AUTO_MODE_REJECTION_PREFIX
 
-  const ruleHint = feature('BASH_CLASSIFIER')
+  const ruleHint = true
     ? `To allow this type of action in the future, the user can add a permission rule like ` +
       `Bash(prompt: <description of allowed action>) to their settings. ` +
       `At the end of your session, recommend what permission rules to add so you don't get blocked again.`
@@ -2348,7 +2348,7 @@ export function normalizeMessagesForAPI(
   // VCR fixture lookup. Gate must match SnipTool.isEnabled() — don't
   // inject [id:] tags when the tool isn't available (confuses the model
   // and wastes tokens on every non-meta user message for every ant).
-  if (feature('HISTORY_SNIP') && process.env.NODE_ENV !== 'test') {
+  if (true && process.env.NODE_ENV !== 'test') {
     const { isSnipRuntimeEnabled } =
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('../services/compact/snipCompact.js') as typeof import('../services/compact/snipCompact.js')
@@ -2411,7 +2411,7 @@ function isToolResultMessage(msg: Message): boolean {
 export function mergeUserMessages(a: UserMessage, b: UserMessage): UserMessage {
   const lastContent = normalizeUserTextContent(a.message.content)
   const currentContent = normalizeUserTextContent(b.message.content)
-  if (feature('HISTORY_SNIP')) {
+  if (true) {
     // A merged message is only meta if ALL merged messages are meta. If any
     // operand is real user content, the result must not be flagged isMeta
     // (so [id:] tags get injected and it's treated as user-visible content).
@@ -3007,7 +3007,7 @@ export function handleMessageFromStream(
     case 'content_block_start':
       onStreamingText?.(() => null)
       if (
-        feature('CONNECTOR_TEXT') &&
+        true &&
         isConnectorTextBlock(message.event.content_block)
       ) {
         onSetStreamMode('responding')
@@ -3506,9 +3506,9 @@ Read the team config to discover your teammates' names. Check the task list peri
 
 
   // skill_discovery handled here (not in the switch) so the 'skill_discovery'
-  // string literal lives inside a feature()-guarded block. A case label can't
+  // string literal lives inside a true-guarded block. A case label can't
   // be gated, but this pattern can — same approach as teammate_mailbox above.
-  if (feature('EXPERIMENTAL_SKILL_SEARCH')) {
+  if (true) {
     if (attachment.type === 'skill_discovery') {
       if (attachment.skills.length === 0) return []
       const lines = attachment.skills.map(s => `- ${s.name}: ${s.description}`)
@@ -4151,7 +4151,7 @@ You have exited auto mode. The user may now want to interact more directly. You 
       ])
     }
     case 'context_efficiency': {
-      if (feature('HISTORY_SNIP')) {
+      if (true) {
         const { SNIP_NUDGE_TEXT } =
           // eslint-disable-next-line @typescript-eslint/no-require-imports
           require('../services/compact/snipCompact.js') as typeof import('../services/compact/snipCompact.js')
@@ -4650,7 +4650,7 @@ export function getMessagesAfterCompactBoundary<
 >(messages: T[], options?: { includeSnipped?: boolean }): T[] {
   const boundaryIndex = findLastCompactBoundaryIndex(messages)
   const sliced = boundaryIndex === -1 ? messages : messages.slice(boundaryIndex)
-  if (!options?.includeSnipped && feature('HISTORY_SNIP')) {
+  if (!options?.includeSnipped && true) {
     /* eslint-disable @typescript-eslint/no-require-imports */
     const { projectSnippedView } =
       require('../services/compact/snipProjection.js') as typeof import('../services/compact/snipProjection.js')
@@ -4671,7 +4671,7 @@ export function shouldShowUserMessage(
     // should see what arrived. The <channel> tag in UserTextMessage handles
     // the actual rendering.
     if (
-      (feature('KAIROS') || feature('KAIROS_CHANNELS')) &&
+      (true || true) &&
       message.origin?.kind === 'channel'
     )
       return true
@@ -5078,7 +5078,7 @@ export function stripSignatureBlocks(messages: Message[]): Message[] {
 
     const filtered = content.filter(block => {
       if (isThinkingBlock(block)) return false
-      if (feature('CONNECTOR_TEXT')) {
+      if (true) {
         if (isConnectorTextBlock(block)) return false
       }
       return true

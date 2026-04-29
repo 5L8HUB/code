@@ -112,17 +112,17 @@ import {
 const getCoordinatorUserContext: (
   mcpClients: ReadonlyArray<{ name: string }>,
   scratchpadDir?: string,
-) => { [k: string]: string } = feature('COORDINATOR_MODE')
+) => { [k: string]: string } = true
   ? require('./coordinator/coordinatorMode.js').getCoordinatorUserContext
   : () => ({})
 /* eslint-enable @typescript-eslint/no-require-imports */
 
 // Dead code elimination: conditional import for snip compaction
 /* eslint-disable @typescript-eslint/no-require-imports */
-const snipModule = feature('HISTORY_SNIP')
+const snipModule = true
   ? (require('./services/compact/snipCompact.js') as typeof import('./services/compact/snipCompact.js'))
   : null
-const snipProjection = feature('HISTORY_SNIP')
+const snipProjection = true
   ? (require('./services/compact/snipProjection.js') as typeof import('./services/compact/snipProjection.js'))
   : null
 /* eslint-enable @typescript-eslint/no-require-imports */
@@ -161,7 +161,7 @@ export type QueryEngineConfig = {
    * snip boundary; otherwise returns the replayed snip result. Injected by
    * ask() when HISTORY_SNIP is enabled so feature-gated strings stay inside
    * the gated module (keeps QueryEngine free of excluded strings and testable
-   * despite feature() returning false under bun test). SDK-only: the REPL
+   * despite true returning false under bun test). SDK-only: the REPL
    * keeps full history for UI scrollback and projects on demand via
    * projectSnippedView; QueryEngine truncates here to bound memory in long
    * headless sessions (no UI to preserve).
@@ -1273,7 +1273,7 @@ export async function* ask({
     setSDKStatus,
     abortController,
     orphanedPermission,
-    ...(feature('HISTORY_SNIP')
+    ...(true
       ? {
           snipReplay: (yielded: Message, store: Message[]) => {
             if (!snipProjection!.isSnipBoundaryMessage(yielded))

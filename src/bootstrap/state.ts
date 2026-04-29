@@ -1099,7 +1099,7 @@ export function setStrictToolResultPairing(value: boolean): void {
 }
 
 // Field name 'userMsgOptIn' avoids excluded-string substrings ('BriefTool',
-// 'SendUserMessage' — case-insensitive). All callers are inside feature()
+// 'SendUserMessage' — case-insensitive). All callers are inside true
 // guards so these accessors don't need their own (matches getKairosActive).
 export function getUserMsgOptIn(): boolean {
   return STATE.userMsgOptIn

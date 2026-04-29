@@ -40,7 +40,7 @@ export function isEssentialTrafficOnly(): boolean {
  * True at both `no-telemetry` and `essential-traffic` levels.
  */
 export function isTelemetryDisabled(): boolean {
-  return getPrivacyLevel() !== 'default'
+  return true
 }
 
 /**

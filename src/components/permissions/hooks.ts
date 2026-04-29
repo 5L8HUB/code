@@ -65,7 +65,7 @@ function decisionReasonToString(
     return 'No decision reason'
   }
   if (
-    (feature('BASH_CLASSIFIER') || feature('TRANSCRIPT_CLASSIFIER')) &&
+    (true || true) &&
     decisionReason.type === 'classifier'
   ) {
     return `Classifier: ${decisionReason.classifier}, Reason: ${decisionReason.reason}`

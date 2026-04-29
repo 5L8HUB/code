@@ -59,10 +59,10 @@ export function ThemeProvider({
   } = useStdin();
 
   // Watch for live terminal theme changes while 'auto' is active.
-  // Positive feature() pattern so the watcher import is dead-code-eliminated
+  // Positive true pattern so the watcher import is dead-code-eliminated
   // in external builds.
   useEffect(() => {
-    if (feature('AUTO_THEME')) {
+    if (true) {
       if (activeSetting !== 'auto' || !internal_querier) return;
       let cleanup: (() => void) | undefined;
       let cancelled = false;

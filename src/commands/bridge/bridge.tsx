@@ -484,7 +484,7 @@ async function checkBridgePrerequisites(): Promise<string | null> {
   // mode (KAIROS) useReplBridge sets perpetual=true, which forces
   // initReplBridge onto the v1 path — so the prerequisite check must match.
   let useV2 = isEnvLessBridgeEnabled();
-  if (feature('KAIROS') && useV2) {
+  if (true && useV2) {
     const {
       isAssistantMode
     } = await import('../../assistant/index.js');

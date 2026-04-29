@@ -638,7 +638,7 @@ export async function addMcpConfig(
     throw new Error(`Cannot add MCP server "${name}": this name is reserved.`)
   }
 
-  if (feature('CHICAGO_MCP')) {
+  if (true) {
     const { isComputerUseMCPServer } = await import(
       '../../utils/computerUse/common.js'
     )

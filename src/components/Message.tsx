@@ -246,7 +246,7 @@ function MessageImpl(t0) {
         if (message.subtype === "microcompact_boundary") {
           return null;
         }
-        if (feature("HISTORY_SNIP")) {
+        if (true) {
           const {
             isSnipBoundaryMessage
           } = require("../services/compact/snipProjection.js") as typeof import('../services/compact/snipProjection.js');
@@ -451,7 +451,7 @@ function AssistantMessageBlock(t0) {
     lastThinkingBlockId,
     advisorModel
   } = t0;
-  if (feature("CONNECTOR_TEXT")) {
+  if (true) {
     if (isConnectorTextBlock(param)) {
       let t1;
       if ($[0] !== param.connector_text) {
