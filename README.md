@@ -1,202 +1,96 @@
-#这个项目 dogecode
+# Doge Code
 
-> dogecode 的一个 Fork。不是官方正史，而是平行世界番外篇；不是萌豚整活仓库，而是“认真修、顺手发癫一点点”的工程分支。
-
-> **免责声明**：本项目仅供个人学习与技术研究，不得用于任何商业用途或非法用途。所有原始源码版权归 [Anthropic](https://www.anthropic.com) 所有。
+> Claude Code 的增强版 Fork，专注于性能优化和功能扩展
 
 [![Fork](https://img.shields.io/badge/Fork-Claude%20Code-f59e0b)](README.md)
-[![Status](https://img.shields.io/badge/status-restored%20%2B%20modded-10b981)](README.md)
+[![Status](https://img.shields.io/badge/status-enhanced%20%2B%20optimized-10b981)](README.md)
 [![Runtime](https://img.shields.io/badge/runtime-Bun%20%2B%20Node-3b82f6)](README.md)
 [![Config](https://img.shields.io/badge/config-~%2F.doge-8b5cf6)](README.md)
 [![License](https://img.shields.io/badge/license-see%20upstream%20notice-lightgrey)](README.md)
-[![Issues](https://img.shields.io/badge/issues-welcome-ef4444)](README.md)
 
 ![Preview](preview.png)
 
-## 这是什么
+## 项目简介
 
-[`Doge Code`](README.md) 基于一份还原后的 [`Claude Code`](README.md) 源码树继续修改而来。
+Doge Code 是基于 Claude Code 源码树的增强版 Fork，在保留原有功能的基础上，进行了多项性能优化和功能增强。
 
-可以把它理解为：
+## 主要特性
 
-- 基底仍然是“通过 source map 逆向还原 + 缺失模块补齐”得到的可运行代码树
-- 但在此之上，加入了这个 Fork 自己的目标和行为调整
-- 目标不是“100% 忠于上游”，而是“让它更适合折腾、适合代理转接、适合自定义模型接入”
+### 已禁用遥测
+- 完全禁用了所有遥测和分析功能
+- 隐私优先，无数据收集
 
-如果用 ACG 比喻，大概属于：
+### 增强的自动压缩上下文功能
+- 支持三种压缩策略：激进(aggressive)、均衡(balanced)、保守(conservative)
+- 可配置压缩阈值百分比
+- 智能上下文分析和冗余检测
+- 保留最近消息计数配置
 
-- 原作：[`Claude Code`](README.md)
-- 本作：[`Doge Code`](README.md)
-- 定位：不是官方 BD 修正集，而是高强度民间魔改但努力保持剧情逻辑自洽的外传 OVA
+### 内存占用优化
+- 文件读取缓存优化（从 1000 减少到 200 条目）
+- CircularBuffer 循环缓冲区内存管理优化
+- 历史记录限制优化（最大 50 条）
+- 新增内存管理工具模块，提供：
+  - 内存使用监控
+  - 自动内存清理
+  - 内存健康状态评估
 
-## 当前定位
-
-这个仓库当前强调的是以下方向：
-
+### 自定义配置支持
 - 支持自定义 Anthropic 兼容接口地址
-- 正在加入 OpenAI Chat Completions ↔ Anthropic Messages 转接能力
 - 支持自定义 API Key
 - 支持自定义模型与模型列表管理
-- 尽量把自定义接入数据收口到 [`~/.doge`](README.md) 路径体系
-- 在保留 CLI/TUI 主体结构的前提下，降低对官方登录流的绑定
+- 配置数据收口到 `~/.doge` 路径
 
-换句话说，它现在更像一个“可自托管 / 可代理 / 可转接”的 [`Claude Code`](README.md) 变体。
+### Buddy 宠物系统
+内置小企鹅宠物，显示在输入框旁边：
+- `/buddy` - 启用/唤出 Buddy
+- `/buddy pet` - 摸摸 Buddy（爱心动画）
+- `/buddy mute` - 静音
+- `/buddy unmute` - 恢复显示
 
-## 与原版 Claude Code 的数据隔离
-
-[`Doge Code`](README.md) 默认**不应**与原版 [`Claude Code`](README.md) 共用配置和缓存目录。
-
-当前 Fork 已明确把默认用户目录收口到：
-
-- 配置目录：[`~/.doge`](README.md)
-- 全局配置文件：[`~/.doge/.claude.json`](README.md)
-
-这样做的目的，是避免以下问题：
-
-- 原版 [`Claude Code`](README.md) 的登录态污染 [`Doge Code`](README.md)
-- 原版保存的 endpoint / token / model 配置影响 Doge 的代理转接逻辑
-- 两边共用 [`.claude.json`](README.md) 或 [`.claude/`](README.md) 导致奇怪的网络、认证、模型或 UI 异常
-
-如果用户以前装过原版 [`Claude Code`](README.md)，再运行 [`Doge Code`](README.md) 时出现“明明没这么配却读到了旧配置”的现象，通常就是历史数据混用导致的。
-
-建议：
-
-- 原版继续使用它自己的 [`.claude`](README.md) / [`.claude.json`](README.md)
-- [`Doge Code`](README.md) 使用 [`.doge`](README.md) 目录
-- 如需手动指定，也可以通过 [`CLAUDE_CONFIG_DIR`](README.md) 为 [`Doge Code`](README.md) 指向独立目录
-
-一句话总结：
-
-> 原版走原版的窝，狗子住狗子的窝，别把缓存、认证和配置炖成一锅。
-
-## OpenAI 兼容接口说明
-
-[`Doge Code`](README.md) 正在加入一个“中间转接层”模式，用来让内部仍按 Anthropic Messages 结构工作的主逻辑，转发到 OpenAI Chat Completions 接口。
-
-目标行为是：
-
-- 内部程序仍按 Anthropic Messages 模式组织请求
-- 当选择 OpenAI API 格式时，由中间层把 Messages 请求改写成 Chat Completions 请求
-- 远端返回 Chat Completions 流后，再由中间层回转成内部可消费的 Messages 风格流事件
-
-这意味着它不是简单改一个 Base URL，而是协议级别的输入输出流转接。
-
-当前状态：
-
-- API 格式选择界面与配置持久化已加入
-- OpenAI 兼容转接模块正在迭代中
-- 目前仍属于开发中功能，可能出现流式事件不完整、消息映射异常、部分工具调用兼容不足等情况
-
-如果你只是想稳定使用，建议优先走 Anthropic 兼容接口模式；如果你在测试 OpenAI 格式，请把它视为实验功能。
-
-## 和原始还原仓库的关系
-
-这个仓库**不是**上游官方源码仓库，也**不是** pristine 状态的 Claude Code。
-
-它有两层历史：
-
-1. 第一层：还原后的源码树
-2. 第二层：基于该源码树继续进行的 Fork 改造
-
-因此你会看到两类差异同时存在：
-
-- 来自恢复过程的 shim、fallback、兼容层
-- 来自 Doge Code 的主动魔改
-
-这两类改动都是真实存在的，不建议把当前代码误判成“官方上游源码镜像”。
-
-## 当前状态
-
-- 该源码树已经可以在本地开发流程中恢复并运行
-- [`bun install`](README.md) 可用于安装依赖
-- [`bun run dev`](README.md) 可用于启动恢复后的 CLI/TUI
-- [`bun run version`](README.md) 可用于输出当前版本信息
-- 项目已被继续改造成 [`Doge Code`](README.md) 分支，部分行为和 UI 已不再与原始 Claude Code 一致
-- 部分区域仍保留恢复期 fallback，因此行为可能与上游实现不同
-- OpenAI API 格式转接功能仍在开发中，当前并非完全稳定
-
-## 为什么会有这个仓库
-
-因为 source map 并不能召唤完整原仓库，最多只能说“把灵魂碎片召回来一部分”。
-
-常见缺口包括：
-
-- 类型专用文件缺失
-- 构建产物和中间文件缺失
-- 私有包包装层无法恢复
-- 原生绑定无法恢复
-- 动态导入资源不完整
-
-因此这个仓库的目标从一开始就不是考古式供奉，而是：
-
-- 先恢复到可运行
-- 再恢复到可维护
-- 最后在能跑的基础上，按需求继续 Fork
-
-简而言之：
-
-> 先让它活，再让它能打，再让它变成狗。
-
-## 运行方式
-
-环境要求：
+## 环境要求
 
 - Bun 1.3.5 或更高版本
 - Node.js 24 或更高版本
 
-安装依赖：
+## 快速安装
 
 ```bash
+# 克隆仓库
+git clone https://github.com/5L8HUB/code.git
+cd code
+
+# 安装依赖
 bun install
-```
 
-## 快速安装（推荐开发者直接源码使用）
-
-如果你是直接拉这个仓库源码来用，最快的方式是用 [`bun link`](README.md) 把它注册成全局命令。
-
-### 方式一：源码目录内直接注册
-
-在仓库根目录执行：
-
-```bash
-bun install
+# 注册全局命令
 bun link
-```
 
-注册成功后：
-
-- 全局包名是 [`@doge-code/cli`](package.json:2)
-- 命令名是 [`doge`](package.json:24)
-
-此后可直接运行：
-
-```bash
+# 运行
 doge
 ```
 
-### 方式二：在其他项目中引用 link 包
+## 配置说明
 
-如果你要在别的工程里依赖它，可以使用：
+### 自动压缩配置
 
-```bash
-bun link @doge-code/cli
-```
+可通过 `/config` 命令配置：
 
-或者在 [`package.json`](package.json) 中写：
+| 配置项 | 说明 | 默认值 |
+|--------|------|--------|
+| `autoCompactThreshold` | 压缩阈值百分比 | 85% |
+| `autoCompactStrategy` | 压缩策略 | balanced |
+| `autoCompactPreserveRecent` | 保留最近消息数 | 10 |
 
-```json
-{
-  "dependencies": {
-    "@doge-code/cli": "link:@doge-code/cli"
-  }
-}
-```
+### 策略说明
 
-## 使用 Git 直接源码级更新
+| 策略 | 阈值 | 缓冲区倍数 | 适用场景 |
+|------|------|------------|----------|
+| aggressive | 70% | 1.5x | 内存紧张时 |
+| balanced | 85% | 1.0x | 日常使用 |
+| conservative | 93% | 0.7x | 需要更多上下文时 |
 
-这个 Fork 很适合直接通过 Git 拉取更新，而不是走传统已发布包升级。
-
-典型更新流程：
+## 更新方式
 
 ```bash
 git pull
@@ -204,108 +98,17 @@ bun install
 bun link
 ```
 
-含义分别是：
+## 与原版的区别
 
-- [`git pull`](README.md)：拉取最新源码改动
-- [`bun install`](README.md)：同步依赖变化
-- [`bun link`](README.md)：刷新全局 link 注册，确保命令入口与当前源码一致
+1. **遥测完全禁用** - 无数据收集
+2. **内存优化** - 更低的内存占用
+3. **增强的压缩功能** - 更智能的上下文管理
+4. **配置隔离** - 使用 `~/.doge` 目录，不与原版冲突
 
-如果你本地就是长期用源码目录跑 [`Doge Code`](README.md)，这基本就是“源码级更新”的标准姿势。
+## 免责声明
 
-### 一个推荐工作流
+本项目仅供个人学习与技术研究，不得用于任何商业用途或非法用途。所有原始源码版权归 [Anthropic](https://www.anthropic.com) 所有。
 
-首次安装：
+## 许可证
 
-```bash
-git clone <your-fork-or-repo-url>
-cd claude-code-rev
-bun install
-bun link
-doge
-```
-
-后续更新：
-
-```bash
-git pull
-bun install
-bun link
-doge
-```
-
-## 命令与包名
-
-运行 [`Doge Code`](README.md) CLI：
-
-```bash
-bun run dev
-```
-
-安装为全局命令后，默认命令名为：
-
-```bash
-doge
-```
-
-也就是说，这个 Fork 现在的目标入口名是 [`doge`](README.md)，而不是 [`claude`](README.md)。
-
-如果你使用 [`bun link`](README.md) 进行全局注册链接，那么现在注册出来的包名也不再是原版名，而是：
-
-```bash
-@doge-code/cli
-```
-
-输出版本号：
-
-```bash
-bun run version
-```
-
-## Buddy 宠物系统用法
-
-这个 Fork 内置了一个名为 [`Buddy`](README.md) 的小企鹅宠物，会显示在输入框旁边，并在部分对话后冒泡吐槽或打气。
-
-常用命令如下：
-
-- 启用 / 唤出 Buddy：
-
-```bash
-/buddy
-```
-
-- 摸摸 Buddy（触发爱心动画）：
-
-```bash
-/buddy pet
-```
-
-- 临时关闭 Buddy（静音，不再显示冒泡）：
-
-```bash
-/buddy mute
-```
-
-- 重新打开 Buddy：
-
-```bash
-/buddy unmute
-```
-
-- 查看命令帮助：
-
-```bash
-/buddy help
-```
-
-补充说明：
-
-- 当前这份 Fork 已默认带一个可用的 Buddy，通常启动后就是开启状态
-- [`/buddy mute`](README.md) 是“关闭显示和冒泡”，不是删除宠物数据
-- [`/buddy unmute`](README.md) 会恢复显示
-- 如果你在聊天里直接提到 `Buddy`，它有时会自己在气泡里回应
-此项目在原项目进行fork改进加入了增强版的上下文压缩
-## 说明与免责声明
-
-- 本仓库是 [`Claude Code`](README.md) 的 Fork：[`Doge Code`](README.md)
-- 它包含恢复期代码与后续 Fork 改动，不代表官方立场、
-- 
+请参阅 LICENSE 文件。
