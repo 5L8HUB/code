@@ -1,14 +1,15 @@
 /**
  * A fixed-size circular buffer that automatically evicts the oldest items
  * when the buffer is full. Useful for maintaining a rolling window of data.
+ * Optimized for memory efficiency with proper nullification of evicted items.
  */
 export class CircularBuffer<T> {
-  private buffer: T[]
+  private buffer: (T | null)[]
   private head = 0
   private size = 0
 
   constructor(private capacity: number) {
-    this.buffer = new Array(capacity)
+    this.buffer = new Array(capacity).fill(null)
   }
 
   /**
@@ -16,6 +17,9 @@ export class CircularBuffer<T> {
    * the oldest item will be evicted.
    */
   add(item: T): void {
+    if (this.size === this.capacity) {
+      this.buffer[this.head] = null
+    }
     this.buffer[this.head] = item
     this.head = (this.head + 1) % this.capacity
     if (this.size < this.capacity) {
@@ -43,7 +47,10 @@ export class CircularBuffer<T> {
 
     for (let i = 0; i < available; i++) {
       const index = (start + this.size - available + i) % this.capacity
-      result.push(this.buffer[index]!)
+      const item = this.buffer[index]
+      if (item !== null) {
+        result.push(item)
+      }
     }
 
     return result
@@ -60,7 +67,10 @@ export class CircularBuffer<T> {
 
     for (let i = 0; i < this.size; i++) {
       const index = (start + i) % this.capacity
-      result.push(this.buffer[index]!)
+      const item = this.buffer[index]
+      if (item !== null) {
+        result.push(item)
+      }
     }
 
     return result
@@ -70,9 +80,24 @@ export class CircularBuffer<T> {
    * Clear all items from the buffer.
    */
   clear(): void {
-    this.buffer.length = 0
+    for (let i = 0; i < this.buffer.length; i++) {
+      this.buffer[i] = null
+    }
     this.head = 0
     this.size = 0
+  }
+
+  /**
+   * Resize the buffer to a new capacity, preserving recent items.
+   */
+  resize(newCapacity: number): void {
+    const items = this.toArray()
+    this.clear()
+    this.capacity = newCapacity
+    this.buffer = new Array(newCapacity).fill(null)
+    for (const item of items.slice(-newCapacity)) {
+      this.add(item)
+    }
   }
 
   /**
@@ -80,5 +105,12 @@ export class CircularBuffer<T> {
    */
   length(): number {
     return this.size
+  }
+
+  /**
+   * Get the current capacity of the buffer.
+   */
+  getCapacity(): number {
+    return this.capacity
   }
 }
