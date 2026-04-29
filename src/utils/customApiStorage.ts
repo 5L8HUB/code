@@ -2,7 +2,15 @@ import { getSecureStorage } from './secureStorage/index.js'
 
 export type OpenAICompatMode = 'chat_completions' | 'responses'
 
-export type CustomApiProvider = 'anthropic' | 'openai' | 'gemini'
+export type CustomApiProvider = 
+  | 'anthropic' 
+  | 'openai' 
+  | 'gemini' 
+  | 'deepseek' 
+  | 'bigmodel' 
+  | 'zhipu-coding' 
+  | 'minimax' 
+  | 'xiaomi'
 
 export type CustomApiStorageData = {
   provider?: CustomApiProvider
@@ -15,6 +23,21 @@ export type CustomApiStorageData = {
 
 const CUSTOM_API_STORAGE_KEY = 'customApiEndpoint'
 
+const VALID_PROVIDERS: CustomApiProvider[] = [
+  'anthropic',
+  'openai',
+  'gemini',
+  'deepseek',
+  'bigmodel',
+  'zhipu-coding',
+  'minimax',
+  'xiaomi',
+]
+
+function isValidProvider(value: unknown): value is CustomApiProvider {
+  return typeof value === 'string' && VALID_PROVIDERS.includes(value as CustomApiProvider)
+}
+
 export function readCustomApiStorage(): CustomApiStorageData {
   const storage = getSecureStorage() as {
     read?: () => Record<string, unknown> | null
@@ -24,10 +47,7 @@ export function readCustomApiStorage(): CustomApiStorageData {
   const raw = data[CUSTOM_API_STORAGE_KEY]
   if (!raw || typeof raw !== 'object') return {}
   const value = raw as Record<string, unknown>
-  const provider =
-    value.provider === 'openai' || value.provider === 'anthropic' || value.provider === 'gemini'
-      ? value.provider
-      : undefined
+  const provider = isValidProvider(value.provider) ? value.provider : undefined
   const openaiCompatMode =
     value.openaiCompatMode === 'chat_completions' || value.openaiCompatMode === 'responses'
       ? value.openaiCompatMode

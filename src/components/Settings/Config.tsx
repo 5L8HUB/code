@@ -266,34 +266,87 @@ export function Config({
 
   const customApiProvider = getGlobalConfig().customApiEndpoint?.provider;
   const customApiProviderDisplay = customApiProvider === 'openai'
-    ? 'OpenAI-compatible'
+    ? 'OpenAI'
     : customApiProvider === 'gemini'
-      ? 'Gemini API'
-      : customApiProvider === 'anthropic'
-        ? 'Anthropic-compatible'
-        : 'Not set';
+      ? 'Gemini'
+      : customApiProvider === 'deepseek'
+        ? 'DeepSeek'
+        : customApiProvider === 'bigmodel'
+          ? '智谱 BigModel'
+          : customApiProvider === 'zhipu-coding'
+            ? '智谱 Coding Plan'
+            : customApiProvider === 'minimax'
+              ? 'MinMax Token Plan'
+              : customApiProvider === 'xiaomi'
+                ? '小米 Token Plan'
+                : customApiProvider === 'anthropic'
+                  ? 'Anthropic'
+                  : 'Not set';
+
+  const providerOptions = [
+    'Anthropic',
+    'OpenAI',
+    'Gemini',
+    'DeepSeek',
+    '智谱 BigModel',
+    '智谱 Coding Plan',
+    'MinMax Token Plan',
+    '小米 Token Plan',
+  ];
+
+  const providerPresets: Record<string, { baseURL: string; defaultModel?: string }> = {
+    'Anthropic': { baseURL: 'https://api.anthropic.com', defaultModel: 'claude-sonnet-4-20250514' },
+    'OpenAI': { baseURL: 'https://api.openai.com/v1', defaultModel: 'gpt-4o' },
+    'Gemini': { baseURL: 'https://generativelanguage.googleapis.com/v1beta', defaultModel: 'gemini-pro' },
+    'DeepSeek': { baseURL: 'https://api.deepseek.com', defaultModel: 'deepseek-chat' },
+    '智谱 BigModel': { baseURL: 'https://open.bigmodel.cn/api/paas/v4', defaultModel: 'glm-4-flash' },
+    '智谱 Coding Plan': { baseURL: 'https://open.bigmodel.cn/api/paas/v4', defaultModel: 'glm-4-flash' },
+    'MinMax Token Plan': { baseURL: 'https://api.minimax.chat/v1', defaultModel: 'abab6.5s-chat' },
+    '小米 Token Plan': { baseURL: 'https://api.xiaomi.com/v1', defaultModel: 'mi-chat' },
+  };
 
   // TODO: Add MCP servers
   const settingsItems: Setting[] = [
   // Global settings
   {
     id: 'customApiProvider',
-    label: `Compatible API provider: ${customApiProviderDisplay}`,
+    label: `API Provider: ${customApiProviderDisplay}`,
     value: customApiProviderDisplay,
-    options: ['Anthropic-compatible', 'OpenAI-compatible', 'Gemini API'],
+    options: providerOptions,
     type: 'enum' as const,
     onChange(value: string) {
-      const nextProvider = value === 'OpenAI-compatible' ? 'openai' : value === 'Gemini API' ? 'gemini' : value === 'Anthropic-compatible' ? 'anthropic' : undefined;
+      const providerMap: Record<string, string | undefined> = {
+        'Anthropic': 'anthropic',
+        'OpenAI': 'openai',
+        'Gemini': 'gemini',
+        'DeepSeek': 'deepseek',
+        '智谱 BigModel': 'bigmodel',
+        '智谱 Coding Plan': 'zhipu-coding',
+        'MinMax Token Plan': 'minimax',
+        '小米 Token Plan': 'xiaomi',
+      };
+      const nextProvider = providerMap[value];
+      const preset = providerPresets[value];
       saveGlobalConfig(current => ({
         ...current,
         customApiEndpoint: {
           ...current.customApiEndpoint,
           provider: nextProvider,
-          openaiCompatMode: nextProvider === 'openai'
+          baseURL: preset?.baseURL ?? current.customApiEndpoint?.baseURL,
+          model: preset?.defaultModel ?? current.customApiEndpoint?.model,
+          openaiCompatMode: nextProvider && nextProvider !== 'anthropic'
             ? current.customApiEndpoint?.openaiCompatMode ?? 'chat_completions'
             : undefined
         }
       }));
+      if (preset?.baseURL) {
+        process.env.ANTHROPIC_BASE_URL = preset.baseURL;
+        setCustomBaseURL(preset.baseURL);
+      }
+      if (preset?.defaultModel) {
+        process.env.ANTHROPIC_MODEL = preset.defaultModel;
+        setCustomModelValue(preset.defaultModel);
+      }
       setGlobalConfig(getGlobalConfig());
     }
   }, {

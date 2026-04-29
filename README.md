@@ -56,6 +56,22 @@ Doge Code (基于泄露源码改进)
 - 支持自定义模型与模型列表管理
 - 配置数据收口到 `~/.doge` 路径
 
+### 多 Provider 支持
+内置多个 API Provider 预设，可通过 `/config` 快速切换：
+
+| Provider | Base URL | 默认模型 |
+|----------|----------|---------|
+| Anthropic | `https://api.anthropic.com` | claude-sonnet-4-20250514 |
+| OpenAI | `https://api.openai.com/v1` | gpt-4o |
+| Gemini | `https://generativelanguage.googleapis.com/v1beta` | gemini-pro |
+| DeepSeek | `https://api.deepseek.com` | deepseek-chat |
+| 智谱 BigModel | `https://open.bigmodel.cn/api/paas/v4` | glm-4-flash |
+| 智谱 Coding Plan | `https://open.bigmodel.cn/api/paas/v4` | glm-4-flash |
+| MinMax Token Plan | `https://api.minimax.chat/v1` | abab6.5s-chat |
+| 小米 Token Plan | `https://api.xiaomi.com/v1` | mi-chat |
+
+选择 Provider 后会自动配置对应的 Base URL 和默认模型。
+
 ### Buddy 宠物系统
 内置小企鹅宠物，显示在输入框旁边：
 - `/buddy` - 启用/唤出 Buddy
