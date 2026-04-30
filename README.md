@@ -95,6 +95,21 @@ export ANTHROPIC_1M_MODELS=custom-model-1,custom-model-2
 doge --model deepseek-chat[1m]
 ```
 
+### 双运行时支持
+本项目支持两种运行时：
+
+1. **Bun（推荐）** - 主要开发和打包运行时
+   - 更快的启动速度
+   - 原生 TypeScript 支持
+   - 完整功能支持
+
+2. **Node.js（tsx）** - 兼容运行时
+   - 更广泛的兼容性
+   - 使用 tsx 提供 TypeScript 支持
+   - 良好的回退机制
+
+两种运行时都可以正常使用所有功能。
+
 ### Buddy 宠物系统
 内置小企鹅宠物，显示在输入框旁边：
 - `/buddy` - 启用/唤出 Buddy
@@ -104,10 +119,12 @@ doge --model deepseek-chat[1m]
 
 ## 环境要求
 
-- Bun 1.3.5 或更高版本
-- Node.js 24 或更高版本
+- **推荐运行时**：Bun 1.3.5 或更高版本
+- **兼容运行时**：Node.js 24 或更高版本 + tsx
 
 ## 快速安装
+
+### 使用 Bun（推荐）
 
 ```bash
 # 克隆仓库
@@ -122,6 +139,28 @@ bun link
 
 # 运行
 doge
+```
+
+### 使用 Node.js + tsx
+
+```bash
+# 克隆仓库
+git clone https://github.com/5L8HUB/code.git
+cd code
+
+# 安装依赖
+npm install
+# 或
+pnpm install
+# 或
+yarn install
+
+# 运行
+npm run dev:node
+# 或
+pnpm dev:node
+# 或
+yarn dev:node
 ```
 
 ## 配置说明
@@ -146,10 +185,19 @@ doge
 
 ## 更新方式
 
+### 使用 Bun
+
 ```bash
 git pull
 bun install
 bun link
+```
+
+### 使用 Node.js
+
+```bash
+git pull
+npm install
 ```
 
 ## 与原版的区别
@@ -158,6 +206,8 @@ bun link
 2. **内存优化** - 更低的内存占用
 3. **增强的压缩功能** - 更智能的上下文管理
 4. **配置隔离** - 使用 `~/.doge` 目录，不与原版冲突
+5. **双运行时支持** - Bun 和 Node.js 都可以运行
+6. **更多 Provider 支持** - DeepSeek、智谱、MinMax、小米等
 
 ## 致谢
 
@@ -171,3 +221,4 @@ bun link
 ## 许可证
 
 请参阅 LICENSE 文件。
+

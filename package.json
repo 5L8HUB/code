@@ -18,12 +18,16 @@
     "dev": "bun run ./src/bootstrap-entry.ts",
     "start": "bun run ./src/bootstrap-entry.ts",
     "version": "bun run ./src/bootstrap-entry.ts --version",
-    "dev:restore-check": "bun run ./src/dev-entry.ts"
+    "dev:restore-check": "bun run ./src/dev-entry.ts",
+    "dev:node": "tsx ./src/bootstrap-entry.ts",
+    "start:node": "tsx ./src/bootstrap-entry.ts",
+    "version:node": "tsx ./src/bootstrap-entry.ts --version"
   },
   "bin": {
     "doge": "./src/bootstrap-entry.ts"
   },
   "dependencies": {
+    "tsx": "^4.0.0",
     "@alcalzone/ansi-tokenize": "*",
     "@ant/claude-for-chrome-mcp": "file:./shims/ant-claude-for-chrome-mcp",
     "@ant/computer-use-input": "file:./shims/ant-computer-use-input",
