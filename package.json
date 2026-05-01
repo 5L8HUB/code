@@ -15,9 +15,9 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "dev": "bun run ./src/bootstrap-entry.ts",
-    "start": "bun run ./src/bootstrap-entry.ts",
-    "version": "bun run ./src/bootstrap-entry.ts --version",
+    "dev": "node run.js",
+    "start": "node run.js",
+    "version": "node run.js --version",
     "dev:restore-check": "bun run ./src/dev-entry.ts",
     "dev:node": "tsx ./src/bootstrap-entry.ts",
     "start:node": "tsx ./src/bootstrap-entry.ts",
