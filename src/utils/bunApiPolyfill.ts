@@ -16,6 +16,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // 全局 Bun polyfill
 if (!isBun) {
+  console.log('[Doge Code] Loading Bun polyfills for Node.js...')
+  
   // 安全地保存原始 console
   const safeGlobal: any = globalThis
   safeGlobal._originalConsole = {
